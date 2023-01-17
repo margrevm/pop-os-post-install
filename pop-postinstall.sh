@@ -45,6 +45,7 @@ PACKAGE_LIST=(
 	codium
 	git
 	curl
+	unzip
 )
 
 # Add respositiories
