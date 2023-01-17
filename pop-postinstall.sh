@@ -25,6 +25,9 @@ mkdir -pv $HOME/projects
 mkdir -pv $HOME/scripts
 # Folder for source code and repos
 mkdir -pv $HOME/src
+# Folder for downloaded packages
+DL_DIR=$HOME/Downloads/packages
+mkdir -pv $DL_DIR
 
 # ---------------------------------------------------
 # APT package installation
@@ -46,6 +49,7 @@ PACKAGE_LIST=(
 	git
 	curl
 	unzip
+	snapd
 )
 
 # Add respositiories
@@ -89,6 +93,7 @@ sudo apt autoremove --purge -y
 #TODO Add Chromium with codecs, ...
 FLATPAK_LIST=(
 	spotify
+	com.bitwarden.desktop
 )
 
 # add flathub repository
@@ -98,7 +103,7 @@ for flatpak_name in ${FLATPAK_LIST[@]}; do
 	if ! flatpak list | grep -q $flatpak_name; then
 		flatpak install "$flatpak_name" -y
 	else
-		echo "$package_name already installed"
+		echo "$flatpak_name already installed"
 	fi
 done
 
@@ -108,36 +113,44 @@ flatpak update
 # Snap packages installation
 # ---------------------------------------------------
 # Important: Install 'snapd' to support snap packages (available as apt package).
-# TODO Add
+# Snap is not natively supported by Pop!_OS. The usage of flatpak is preferred.
 
+SNAP_LIST=(
+	bw
+)
 
+for snap_name in ${SNAP_LIST[@]}; do
+	if ! snap list | grep -q $snap_name; then
+		flatpak install "$snap_name" -y
+	else
+		echo "$snap_name already installed"
+	fi
+done
 
-# ------ Installing softwares ------ #
-echo "[📥 Downloading and installing external software]"
+snap update
+
+# ---------------------------------------------------
+# .deb packages installation (manual)
+# ---------------------------------------------------
+echo "[Downloading and installing .deb packages]"
 echo ""
 
-mkdir "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_VIVALDI" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_DISCORD" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_HYPER_TERMINAL" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_TICKTICK" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_MEGASYNC" -P "$DOWNLOADS_DIRECTORY"
-wget -c "$URL_VSCODE" -P "$DOWNLOADS_DIRECTORY"
+wget -c "$URL_VIVALDI" -P "$DL_DIR"
+wget -c "$URL_DISCORD" -P "$DL_DIR"
+wget -c "$URL_HYPER_TERMINAL" -P "$DL_DIR"
+wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DL_DIR"
+wget -c "$URL_TICKTICK" -P "$DL_DIR"
+wget -c "$URL_MEGASYNC" -P "$DL_DIR"
+wget -c "$URL_VSCODE" -P "$DL_DIR"
 
-sudo dpkg -i $DOWNLOADS_DIRECTORY/*.deb
+sudo dpkg -i $DL_DIR/*.deb
 sudo apt install -f
 
-# ------ Installing some packages ------ #
-echo "[📦 Installing others packages]"
-echo ""
+# ---------------------------------------------------
+# Other packages (full manual installation)
+# ------------------------------------------------
+#echo "[Other packages]"
 
-npm i sass -g
-npm install -g nativefier
-npm install -g nodemon
-
-sudo apt update
-sudo apt install -f
 
 # ---------------------------------------------------
 # Custom actions
