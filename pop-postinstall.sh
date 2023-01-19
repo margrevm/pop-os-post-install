@@ -20,7 +20,7 @@ CREATE_DIRS=(
 	$HOME/src
 )
 
-mkdir -pv $CREATE_DIRS
+mkdir -pv ${CREATE_DIRS[@]}
 
 # ---------------------------------------------------
 # APT package installation
@@ -61,21 +61,21 @@ APT_REMOVE_PACKAGES=(
 echo "➜ Adding apt repositories..."
 # Repo for VSCodium which is VSCode whitout Miccrosoft telemetry. More infos on https://vscodium.com/.
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg 
-echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list 
+echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list 
 
 echo "➜ Updating apt repositories..."
 sudo apt update -y
 
 echo "➜ Installing packages..."
 # Existing packages will not be installed by apt.
-sudo apt install $APT_INSTALL_PACKAGES -y
+sudo apt install ${APT_INSTALL_PACKAGES[@]} -y
 
 echo "➜ Purging/removing apt packages..."
 # This will remove the package and the configuration files (/etc)
 # Should be used for applications you will never need. If you are not sure use 'apt remove' 
 # instead (uncomment below) which will leave the config files.
-sudo apt purge $APT_PURGE_PACKAGES -y
-#sudo apt remove $APT_REMOVE_PACKAGES -y
+sudo apt purge ${APT_PURGE_PACKAGES[@]} -y
+#sudo apt remove ${APT_REMOVE_PACKAGES[@]} -y
 
 echo "➜ Removing unused apt package dependencies..."
 # ... packages that are not longer needed
@@ -110,7 +110,7 @@ echo "➜ Add flatpak repositories..."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 echo "➜ Install flatpak packages..."
-flatpak install "$FLATPAK_INSTALL_PACKAGES" -y
+flatpak install ${FLATPAK_INSTALL_PACKAGES[@]} -y
 
 echo "➜ Udate flatpak packages..."
 flatpak update
@@ -126,7 +126,7 @@ SNAP_INSTALL_PACKAGES=(
 )
 
 echo "➜ Install snap packages..."
-snap install "$SNAP_INSTALL_PACKAGES" -y
+snap install ${SNAP_INSTALL_PACKAGES[@]} -y
 
 echo "➜ Update snap packages..."
 snap update
