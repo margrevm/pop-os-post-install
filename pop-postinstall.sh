@@ -111,7 +111,8 @@ echo "➜ Add flatpak repositories..."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 echo "➜ Install flatpak packages..."
-flatpak install ${FLATPAK_INSTALL_PACKAGES[@]}
+# By default flatpak packages will be installed system wide.
+flatpak install --system ${FLATPAK_INSTALL_PACKAGES[@]}
 
 echo "➜ Udate flatpak packages..."
 flatpak update
