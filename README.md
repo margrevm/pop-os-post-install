@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Pop!_OS post-installation script
 
 Basic Pop!_OS post-installation shell script for personal use. Feel free to fork and tailor it according to your own needs. I put an emphasis on **(re-)usability** and **simplicity**: No fancy loops, unnecessary code or yes/no prompts... just plain linux commands that are easy to understand and to modify.
