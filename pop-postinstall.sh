@@ -9,19 +9,6 @@
 #
 # Post-installation script for Pop!_OS
 
-function prompt_y_n() {
-    read -p "$1 (y/n) " yn
-    case $yn in 
-        [yY] ) ;;
-        [nN] ) echo exiting...;
-            exit;;
-        * ) echo invalid response;;
-    esac
-}
-
-# 
-prompt_y_n "Do you want to run the script now?"
-
 # ---------------------------------------------------
 # Creating folder structure
 # ---------------------------------------------------
@@ -158,7 +145,7 @@ snap update
 #sudo apt install -f
 
 # ---------------------------------------------------
-# Other packages (full manual installation)
+# Other packages installation (full manual installation)
 # ------------------------------------------------
 #echo "[Other packages]"
 
@@ -166,39 +153,34 @@ snap update
 # ---------------------------------------------------
 # Custom actions
 # ---------------------------------------------------
-# setup xanmod for better kernel scheduler experience
-echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
-wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/xanmod-kernel.gpg add -
-sudo apt update -y && sudo apt install linux-xanmod -y
+echo "[Custom actions]"
 
-# ------ CapsLock delay fixer ------ #
-echo "[📝 Fixing capslock delay]"
-echo ""
-
-git clone https://github.com/hexvalid/Linux-CapsLock-Delay-Fixer.git
-cd Linux-CapsLock-Delay-Fixer/
-mv bootstrap.sh ..
-cd ..
-bash -ic "sh bootstrap.sh"
-rm -r Linux-CapsLock-Delay-Fixer/
-
-
-# ---------------------------------------------------
-# Clone repos
-# ---------------------------------------------------
-
-
+echo "➜ Updating font cache..."
 # Update font cache (required after installing MS fonts)
-sudo fc-cache -f
+sudo fc-cache -fv
 
-# gnome settings
+# ---------------------------------------------------
+# Gnome settings
+# ---------------------------------------------------
+# This really depends on your preferences :-)
+echo "[Applying Gnome settings]"
+
+# Gnome windows:
+# Add the values at the right side of : for buttons on the right side
+gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
+# Enable night light
 gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
+# Gedit settings:
 # All gedit related settings can be listed with: gsettings list-recursively | grep -i gedit
-# Display line numbers in gedit
 gsettings set org.gnome.gedit.preferences.editor display-line-numbers true
-# Tab size is 4 spaces
 gsettings set org.gnome.gedit.preferences.editor tabs-size 4
 gsettings set org.gnome.gedit.preferences.editor insert-spaces true
+
+# ---------------------------------------------------
+# Clone git repos
+# ---------------------------------------------------
+echo "[Cloning git repos]"
+
 
 # grab mullvad
 cd && wget --content-disposition https://mullvad.net/download/app/deb/latest && sudo dpkg -i Mullvad*.deb
