@@ -65,22 +65,22 @@ wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.g
 echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list 
 
 echo "➜ Updating apt repositories..."
-sudo apt update -y
+sudo apt update -yq
 
 echo "➜ Installing packages..."
 # Existing packages will not be installed by apt.
-sudo apt install ${APT_INSTALL_PACKAGES[@]}
+sudo apt install ${APT_INSTALL_PACKAGES[@]} -q
 
 echo "➜ Purging/removing apt packages..."
 # This will remove the package and the configuration files (/etc)
 # Should be used for applications you will never need. If you are not sure use 'apt remove' 
 # instead (uncomment below) which will leave the config files.
-sudo apt purge ${APT_PURGE_PACKAGES[@]}
+sudo apt purge ${APT_PURGE_PACKAGES[@]} -q
 #sudo apt remove ${APT_REMOVE_PACKAGES[@]}
 
 echo "➜ Removing unused apt package dependencies..."
 # ... packages that are not longer needed
-sudo apt autoremove
+sudo apt autoremove -q
 
 echo "➜ Upgrading apt packages to their latest version..."
 # 'apt full-upgrade' is an enhanced version of the 'apt upgrade' command. 
@@ -88,13 +88,13 @@ echo "➜ Upgrading apt packages to their latest version..."
 # some packages to satisfy some dependencies. The command includes a smart conflict 
 # resolution feature that ensures that critical packages are upgraded first 
 # at the expense of those considered of a lower priority.
-sudo apt full-upgrade
+sudo apt full-upgrade -q
 
 echo "➜ Cleaning package cache..."
 # 'apt autoclean' removes all stored archives in your cache for packages that can not 
 # be downloaded anymore (thus packages that are no longer in the repo or that have a newer version in the repo).
 # You can use 'apt clean' to remove all stored archives in your cache to safe even more disk space.
-sudo apt autoclean
+sudo apt autoclean -q
 #sudo apt clean
 
 # ---------------------------------------------------
@@ -103,7 +103,7 @@ sudo apt autoclean
 echo "[Installing flatpak packages]"
 
 FLATPAK_INSTALL_PACKAGES=(
-	spotify
+	com.spotify.Client
 	net.cozic.joplin_desktop
 )
 
