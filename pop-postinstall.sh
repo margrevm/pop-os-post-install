@@ -7,7 +7,7 @@
 # |_|   \___/| .__/(_)___\___/|____/ 
 #            |_|    |_____|
 #
-# Post-installation script
+# Post-installation script for Pop!_OS
 
 function prompt_y_n() {
     read -p "$1 (y/n) " yn
@@ -41,12 +41,14 @@ mkdir -pv $DL_DIR
 # ---------------------------------------------------
 echo "[Installing apt packages]"
 
-PACKAGE_LIST=(
+APT_INSTALL_PACKAGES=(
+	tree
+	neofetch
+	snapd
 	vlc
 	htop
 	gnome-tweaks
 	python3
-	neofetch
 	nmap
 	wget
 	java-latest-openjdk
@@ -55,43 +57,52 @@ PACKAGE_LIST=(
 	git
 	curl
 	unzip
-	snapd
 )
 
-# Add respositiories
-echo "➜ Add apt repositories"
+APT_PURGE_PACKAGES=(
+	geary
+)
+
+APT_REMOVE_PACKAGES=(
+)
+
+echo "➜ Adding apt repositories..."
 # Repo for VSCodium which is VSCode whitout Miccrosoft telemetry. More infos on https://vscodium.com/.
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg 
 echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list 
 
-# update repositories
-echo "➜ Update apt repositories"
-sudo apt-get update -y
-
-# iterate through packages and install them if not already installed
-for package_name in ${PACKAGE_LIST[@]}; do
-	if ! sudo apt list --installed | grep -q "^\<$package_name\>"; then
-		echo "installing $package_name..."
-		sleep .5
-		sudo apt-get install "$package_name" -y
-		echo "$package_name installed"
-	else
-		echo "$package_name already installed"
-	fi
-done
-
-# remove default firefox
-#sudo apt purge firefox -y
-
-# upgrade packages
-sudo apt clean -y
-sudo apt autoclean
+echo "➜ Updating apt repositories..."
 sudo apt update -y
-sudo apt install -f
-sudo dpkg --configure -a
+
+echo "➜ Installing packages..."
+# Existing packages will not be installed by apt.
+sudo apt install $APT_INSTALL_PACKAGES -y
+
+echo "➜ Purging/removing apt packages..."
+# This will remove the package and the configuration files (/etc)
+# Should be used for applications you will never need. If you are not sure use 'apt remove' 
+# instead (uncomment below) which will leave the config files.
+sudo apt purge $APT_PURGE_PACKAGES -y
+#sudo apt remove $APT_REMOVE_PACKAGES -y
+
+echo "➜ Removing unused apt package dependencies..."
+# ... packages that are not longer needed
+sudo apt autoremove
+
+echo "➜ Upgrading apt packages to their latest version..."
+# 'apt full-upgrade' is an enhanced version of the 'apt upgrade' command. 
+# Apart from upgrading existing software packages, it installs and removes 
+# some packages to satisfy some dependencies. The command includes a smart conflict 
+# resolution feature that ensures that critical packages are upgraded first 
+# at the expense of those considered of a lower priority.
 sudo apt full-upgrade -y
-sudo apt dist-upgrade -y
-sudo apt autoremove --purge -y
+
+echo "➜ Cleaning package cache..."
+# 'apt autoclean' removes all stored archives in your cache for packages that can not 
+# be downloaded anymore (thus packages that are no longer in the repo or that have a newer version in the repo).
+# You can use 'apt clean' to remove all stored archives in your cache to safe even more disk space.
+sudo apt autoclean
+#sudo apt clean -y
 
 # ---------------------------------------------------
 # Flatpack packages installation
@@ -99,7 +110,6 @@ sudo apt autoremove --purge -y
 #TODO Add Chromium with codecs, ...
 FLATPAK_LIST=(
 	spotify
-	com.bitwarden.desktop
 )
 
 # add flathub repository
@@ -119,7 +129,7 @@ flatpak update
 # Snap packages installation
 # ---------------------------------------------------
 # Important: Install 'snapd' to support snap packages (available as apt package).
-# Snap is not natively supported by Pop!_OS. The usage of flatpak is preferred.
+# Snap is not natively supported by Pop!_OS. The usage of flatpak is recommended.
 
 SNAP_LIST=(
 	bw
@@ -206,6 +216,7 @@ firefox https://github.com
 clear
 neofetch
 echo "📁 Your archives ⤵"
+tree $HOME
 echo ""
 ls
 echo ""
