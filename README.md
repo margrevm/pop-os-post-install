@@ -14,15 +14,11 @@ Basic Pop!_OS post-installation shell script for personal use. Feel free to fork
 
 ## Running the script
 
-The first thing I do on a clean Pop!_OS installation.
+The first thing I do on a clean Pop!_OS installation...
 
 ```sh
 wget https://github.com/margrevm/pop-os-post-install/blob/v22.04/pop-postinstall.sh
 sh pop-postinstall.sh
-
-# Alternatively
-chmod +x pop-postinstall.sh
-./pop-postinstall.sh
 ```
 
 ## Supported versions
@@ -33,6 +29,6 @@ I use a branch per operating system version.
 
 ## Credits
 
-This script is inspired by the work of @al12gamer's [popos-postinstall](https://github.com/al12gamer/popos-postinstall) and @darrow12's [Pop_OS-posInstall](https://github.com/darrow12/Pop_OS-posInstall) scripts.
+This script is inspired by the work from @al12gamer ([popos-postinstall](https://github.com/al12gamer/popos-postinstall)) and @darrow12 ([Pop_OS-posInstall](https://github.com/darrow12/Pop_OS-posInstall)).
 
 By Mike Margreve (mike.margreve@outlook.com) and licensed under MIT. The original source can be found here: https://github.com/margrevm/pop-os-post-install
