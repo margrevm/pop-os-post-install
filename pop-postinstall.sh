@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-function confirmation_prompt() {
+#  ____             _     ___  ____  
+# |  _ \ ___  _ __ | |   / _ \/ ___| 
+# | |_) / _ \| '_ \| |  | | | \___ \ 
+# |  __/ (_) | |_) |_|  | |_| |___) |
+# |_|   \___/| .__/(_)___\___/|____/ 
+#            |_|    |_____|
+#
+# Post-installation script
+
+function prompt_y_n() {
     read -p "$1 (y/n) " yn
     case $yn in 
         [yY] ) ;;
@@ -10,10 +19,8 @@ function confirmation_prompt() {
     esac
 }
 
-echo "--------------------------"
-echo " Ubuntu post-installation"
-echo "--------------------------"
-confirmation_prompt "Do you want to run the script now?"
+# 
+prompt_y_n "Do you want to run the script now?"
 
 # ---------------------------------------------------
 # Creating folder structure
@@ -32,11 +39,10 @@ mkdir -pv $DL_DIR
 # ---------------------------------------------------
 # APT package installation
 # ---------------------------------------------------
-echo "[Installing APT packages]"
+echo "[Installing apt packages]"
 
 PACKAGE_LIST=(
 	vlc
-	vlc-plugin-access-extra
 	htop
 	gnome-tweaks
 	python3
@@ -53,14 +59,14 @@ PACKAGE_LIST=(
 )
 
 # Add respositiories
-echo "➜ Add repositories"
+echo "➜ Add apt repositories"
 # Repo for VSCodium which is VSCode whitout Miccrosoft telemetry. More infos on https://vscodium.com/.
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg 
 echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list 
 
 # update repositories
-echo "➜ Updating repositories"
-sudo apt-get update -yq
+echo "➜ Update apt repositories"
+sudo apt-get update -y
 
 # iterate through packages and install them if not already installed
 for package_name in ${PACKAGE_LIST[@]}; do
@@ -121,7 +127,7 @@ SNAP_LIST=(
 
 for snap_name in ${SNAP_LIST[@]}; do
 	if ! snap list | grep -q $snap_name; then
-		flatpak install "$snap_name" -y
+		snap install "$snap_name" -y
 	else
 		echo "$snap_name already installed"
 	fi
@@ -212,5 +218,5 @@ echo ""
 cowsay Have fun!
 
 echo "➜ Rebooting system"
-#confirmation_prompt "Do you want to reboot now?"
+#prompt_y_n "Do you want to reboot now?"
 #reboot
