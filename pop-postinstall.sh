@@ -38,7 +38,8 @@ APT_INSTALL_PACKAGES=(
 	python3-distutils
 	nmap
 	wget
-	java-latest-openjdk
+	default-jdk
+	default-jre
 	heif-gdk-pixbuf
 	codium
 	git
@@ -68,14 +69,14 @@ sudo apt update -y
 
 echo "➜ Installing packages..."
 # Existing packages will not be installed by apt.
-sudo apt install ${APT_INSTALL_PACKAGES[@]} -y
+sudo apt install ${APT_INSTALL_PACKAGES[@]}
 
 echo "➜ Purging/removing apt packages..."
 # This will remove the package and the configuration files (/etc)
 # Should be used for applications you will never need. If you are not sure use 'apt remove' 
 # instead (uncomment below) which will leave the config files.
-sudo apt purge ${APT_PURGE_PACKAGES[@]} -y
-#sudo apt remove ${APT_REMOVE_PACKAGES[@]} -y
+sudo apt purge ${APT_PURGE_PACKAGES[@]}
+#sudo apt remove ${APT_REMOVE_PACKAGES[@]}
 
 echo "➜ Removing unused apt package dependencies..."
 # ... packages that are not longer needed
@@ -87,14 +88,14 @@ echo "➜ Upgrading apt packages to their latest version..."
 # some packages to satisfy some dependencies. The command includes a smart conflict 
 # resolution feature that ensures that critical packages are upgraded first 
 # at the expense of those considered of a lower priority.
-sudo apt full-upgrade -y
+sudo apt full-upgrade
 
 echo "➜ Cleaning package cache..."
 # 'apt autoclean' removes all stored archives in your cache for packages that can not 
 # be downloaded anymore (thus packages that are no longer in the repo or that have a newer version in the repo).
 # You can use 'apt clean' to remove all stored archives in your cache to safe even more disk space.
 sudo apt autoclean
-#sudo apt clean -y
+#sudo apt clean
 
 # ---------------------------------------------------
 # Flatpack packages installation
@@ -110,7 +111,7 @@ echo "➜ Add flatpak repositories..."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 echo "➜ Install flatpak packages..."
-flatpak install ${FLATPAK_INSTALL_PACKAGES[@]} -y
+flatpak install ${FLATPAK_INSTALL_PACKAGES[@]}
 
 echo "➜ Udate flatpak packages..."
 flatpak update
@@ -126,7 +127,7 @@ SNAP_INSTALL_PACKAGES=(
 )
 
 echo "➜ Install snap packages..."
-snap install ${SNAP_INSTALL_PACKAGES[@]} -y
+snap install ${SNAP_INSTALL_PACKAGES[@]}
 
 echo "➜ Update snap packages..."
 snap update
