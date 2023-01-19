@@ -13,15 +13,14 @@
 # Creating folder structure
 # ---------------------------------------------------
 echo "[Creating the folder structure]"
-# Folder for projects (other than source code)
-mkdir -pv $HOME/projects
-# Folder for bash 'general use' scripts
-mkdir -pv $HOME/scripts
-# Folder for source code and repos
-mkdir -pv $HOME/src
-# Folder for downloaded packages
-DL_DIR=$HOME/Downloads/packages
-mkdir -pv $DL_DIR
+
+CREATE_DIRS=(
+	$HOME/projects
+	$HOME/scripts
+	$HOME/src
+)
+
+mkdir -pv $CREATE_DIRS
 
 # ---------------------------------------------------
 # APT package installation
@@ -138,6 +137,8 @@ snap update
 #echo "[Downloading and installing .deb packages manually]"
 
 #echo "➜ Downloading .deb packages..."
+#DL_DIR=$HOME/Downloads/packages
+#mkdir -pv $DL_DIR
 #wget -c "<URL>" -P "$DL_DIR"
 
 #echo "➜ Installing .deb packages..."
@@ -182,15 +183,12 @@ gsettings set org.gnome.gedit.preferences.editor insert-spaces true
 echo "[Cloning git repos]"
 
 
-# grab mullvad
-cd && wget --content-disposition https://mullvad.net/download/app/deb/latest && sudo dpkg -i Mullvad*.deb
 
-# open github to remind me to set up github
-firefox https://github.com
 
-# ------ Installation completed ------ #
+# ---------------------------------------------------
+# Summary
+# ---------------------------------------------------
 
-clear
 neofetch
 echo "📁 Your archives ⤵"
 tree $HOME
@@ -201,10 +199,6 @@ echo "✅ Installation completed!"
 echo "Enjoy your new computer! 💻"
 echo ""
 echo "💬 If you have any questions, please contact me on Discord: Darrow#9826"
-echo "And if you have bugs, please make a issue"
-echo ""
-cowsay Have fun!
 
-echo "➜ Rebooting system"
-#prompt_y_n "Do you want to reboot now?"
-#reboot
+# open github to remind me to set up github
+firefox https://github.com
