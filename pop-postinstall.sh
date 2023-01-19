@@ -49,6 +49,7 @@ APT_INSTALL_PACKAGES=(
 	htop
 	gnome-tweaks
 	python3
+	python3-distutils
 	nmap
 	wget
 	java-latest-openjdk
@@ -57,10 +58,15 @@ APT_INSTALL_PACKAGES=(
 	git
 	curl
 	unzip
+	xclip
+	less
+	ttf-mscorefonts-installer
 )
 
+# Danger zone /!\ Please be careful and make sure to not purge/remove any essential packages
 APT_PURGE_PACKAGES=(
 	geary
+	gnome-contacts
 )
 
 APT_REMOVE_PACKAGES=(
@@ -107,60 +113,49 @@ sudo apt autoclean
 # ---------------------------------------------------
 # Flatpack packages installation
 # ---------------------------------------------------
-#TODO Add Chromium with codecs, ...
-FLATPAK_LIST=(
+echo "[Installing flatpak packages]"
+
+FLATPAK_INSTALL_PACKAGES=(
 	spotify
+	net.cozic.joplin_desktop
 )
 
-# add flathub repository
+echo "➜ Add flatpak repositories..."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-for flatpak_name in ${FLATPAK_LIST[@]}; do
-	if ! flatpak list | grep -q $flatpak_name; then
-		flatpak install "$flatpak_name" -y
-	else
-		echo "$flatpak_name already installed"
-	fi
-done
+echo "➜ Install flatpak packages..."
+flatpak install "$FLATPAK_INSTALL_PACKAGES" -y
 
+echo "➜ Udate flatpak packages..."
 flatpak update
 
 # ---------------------------------------------------
 # Snap packages installation
 # ---------------------------------------------------
+echo "[Installing snap packages]"
 # Important: Install 'snapd' to support snap packages (available as apt package).
 # Snap is not natively supported by Pop!_OS. The usage of flatpak is recommended.
-
-SNAP_LIST=(
+SNAP_INSTALL_PACKAGES=(
 	bw
 )
 
-for snap_name in ${SNAP_LIST[@]}; do
-	if ! snap list | grep -q $snap_name; then
-		snap install "$snap_name" -y
-	else
-		echo "$snap_name already installed"
-	fi
-done
+echo "➜ Install snap packages..."
+snap install "$SNAP_INSTALL_PACKAGES" -y
 
+echo "➜ Update snap packages..."
 snap update
 
 # ---------------------------------------------------
 # .deb packages installation (manual)
 # ---------------------------------------------------
-echo "[Downloading and installing .deb packages]"
-echo ""
+#echo "[Downloading and installing .deb packages manually]"
 
-wget -c "$URL_VIVALDI" -P "$DL_DIR"
-wget -c "$URL_DISCORD" -P "$DL_DIR"
-wget -c "$URL_HYPER_TERMINAL" -P "$DL_DIR"
-wget -c "$URL_4K_VIDEO_DOWNLOADER" -P "$DL_DIR"
-wget -c "$URL_TICKTICK" -P "$DL_DIR"
-wget -c "$URL_MEGASYNC" -P "$DL_DIR"
-wget -c "$URL_VSCODE" -P "$DL_DIR"
+#echo "➜ Downloading .deb packages..."
+#wget -c "<URL>" -P "$DL_DIR"
 
-sudo dpkg -i $DL_DIR/*.deb
-sudo apt install -f
+#echo "➜ Installing .deb packages..."
+#sudo dpkg -i $DL_DIR/*.deb
+#sudo apt install -f
 
 # ---------------------------------------------------
 # Other packages (full manual installation)
