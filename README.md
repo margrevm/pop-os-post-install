@@ -25,6 +25,12 @@ chmod +x pop-postinstall.sh
 ./pop-postinstall.sh
 ```
 
+## Supported versions
+
+I use a branch per operating system version.
+
+- [Pop!_OS 22.04 LTS](https://github.com/margrevm/pop-os-post-install/tree/v22.04) - **Current version**
+
 ## Credits
 
 This script is inspired by the work of @al12gamer's [popos-postinstall](https://github.com/al12gamer/popos-postinstall) and @darrow12's [Pop_OS-posInstall](https://github.com/darrow12/Pop_OS-posInstall) scripts.

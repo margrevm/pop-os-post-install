@@ -139,7 +139,7 @@ snap update
 #echo "➜ Downloading .deb packages..."
 #DL_DIR=$HOME/Downloads/packages
 #mkdir -pv $DL_DIR
-#wget -c "<URL>" -P "$DL_DIR"
+#wget -q --show-progress "<URL>" -P "$DL_DIR"
 
 #echo "➜ Installing .deb packages..."
 #sudo dpkg -i $DL_DIR/*.deb
