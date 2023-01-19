@@ -189,12 +189,7 @@ git clone https://github.com/margrevm/pop-os-post-install $HOME/src
 # ---------------------------------------------------
 # Summary
 # ---------------------------------------------------
-clear
 neofetch
-echo "Your folders ⤵"
-echo ""
-tree $HOME
-
 echo "[Installation completed!]"
 
 # Reminders
