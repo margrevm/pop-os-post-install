@@ -160,7 +160,7 @@ echo "[Custom actions]"
 
 echo "➜ Updating font cache..."
 # Update font cache (required after installing MS fonts)
-sudo fc-cache -fv
+sudo fc-cache -f
 
 # ---------------------------------------------------
 # Gnome settings
