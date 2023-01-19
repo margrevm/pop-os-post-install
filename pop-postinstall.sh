@@ -184,7 +184,10 @@ gsettings set org.gnome.gedit.preferences.editor insert-spaces true
 # ---------------------------------------------------
 echo "[Cloning git repos]"
 
-git clone https://github.com/margrevm/pop-os-post-install $HOME/src
+# Go to source dir
+cd $HOME/src
+
+git clone https://github.com/margrevm/pop-os-post-install
 
 
 # ---------------------------------------------------
@@ -192,6 +195,7 @@ git clone https://github.com/margrevm/pop-os-post-install $HOME/src
 # ---------------------------------------------------
 neofetch
 echo "[Installation completed!]"
+cd $HOME
 
 # Reminders
 # open github website to remind me to set up github
