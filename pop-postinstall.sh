@@ -105,6 +105,7 @@ echo "[Installing flatpak packages]"
 FLATPAK_INSTALL_PACKAGES=(
 	com.spotify.Client
 	net.cozic.joplin_desktop
+	io.github.mimbrero.WhatsAppDesktop.Locale
 )
 
 echo "➜ Add flatpak repositories..."
