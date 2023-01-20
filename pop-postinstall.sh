@@ -184,9 +184,8 @@ gsettings set org.gnome.gedit.preferences.editor insert-spaces true
 # ---------------------------------------------------
 echo "[Cloning git repos]"
 
-# Go to source dir
-cd $HOME/src
-
+# Go target directory
+cd $HOME/scripts
 git clone https://github.com/margrevm/pop-os-post-install
 
 
