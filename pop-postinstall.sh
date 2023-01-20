@@ -48,6 +48,8 @@ APT_INSTALL_PACKAGES=(
 	xclip
 	less
 	ttf-mscorefonts-installer
+	libnotify-bin
+	code
 )
 
 # Danger zone /!\ Please be careful and make sure to not purge/remove any essential packages
@@ -59,10 +61,8 @@ APT_PURGE_PACKAGES=(
 APT_REMOVE_PACKAGES=(
 )
 
-echo "➜ Adding apt repositories..."
-# Repo for VSCodium which is VSCode whitout Miccrosoft telemetry. More infos on https://vscodium.com/.
-wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg 
-echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list 
+#echo "➜ Adding apt repositories..."
+# Nothing yet
 
 echo "➜ Updating apt repositories..."
 sudo apt update -yq
